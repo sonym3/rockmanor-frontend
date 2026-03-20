@@ -201,7 +201,7 @@ export default function BookAppointment() {
             {/* ── Left: Form Panels ── */}
             <div className="lg:col-span-2 space-y-6">
               {/* Service Details */}
-              <div className="bg-white rounded-3xl p-6 md:p-8">
+              <div className="bg-white rounded-3xl p-6 md:p-8 overflow-hidden">
                 <SectionHeader icon={FileText} title="Service Details" />
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -269,7 +269,7 @@ export default function BookAppointment() {
                     </>
                   )}
 
-                  <div>
+                  <div className="min-w-0">
                     <label className={labelCls}>
                       <span className="flex items-center gap-1.5">
                         <Calendar size={13} /> Appointment Date *
@@ -281,7 +281,7 @@ export default function BookAppointment() {
                       min={today}
                       value={form.date}
                       onChange={(e) => set('date', e.target.value)}
-                      className={inputCls}
+                      className={`${inputCls} w-full`}
                     />
                   </div>
 
