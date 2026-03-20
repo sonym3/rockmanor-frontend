@@ -46,6 +46,7 @@ export default function BookAppointment() {
     date: '',
     time: '09:00',
     recurring: 'no',
+    details: '',
     specialRequests: '',
     street: '',
     unit: '',
@@ -79,6 +80,7 @@ export default function BookAppointment() {
       date: '',
       time: '09:00',
       recurring: 'no',
+      details: '',
       specialRequests: '',
       street: '',
       unit: '',
@@ -95,6 +97,7 @@ export default function BookAppointment() {
   }
 
   const selectedType = CLEANING_TYPES.find((t) => t.value === form.cleaningType)
+  const isCustomQuote = selectedType?.price === null
 
   const orderSummary = useMemo(() => {
     const base = selectedType?.price
@@ -219,41 +222,52 @@ export default function BookAppointment() {
                     </select>
                   </div>
 
-                  <div>
-                    <label className={labelCls}>Number of Rooms</label>
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      placeholder="0"
-                      value={form.rooms === 0 ? '' : form.rooms}
-                      onChange={(e) => {
-                        const val = e.target.value.replace(/\D/g, '')
-                        set('rooms', Math.min(10, parseInt(val) || 0))
-                      }}
-                      className={inputCls}
-                    />
-                    {selectedType?.price != null && (
-                      <p className="text-xs text-teal-600 mt-1">+${ROOM_PRICE} per room</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className={labelCls}>Number of Bathrooms</label>
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      placeholder="0"
-                      value={form.bathrooms === 0 ? '' : form.bathrooms}
-                      onChange={(e) => {
-                        const val = e.target.value.replace(/\D/g, '')
-                        set('bathrooms', Math.min(10, parseInt(val) || 0))
-                      }}
-                      className={inputCls}
-                    />
-                    {selectedType?.price != null && (
-                      <p className="text-xs text-teal-600 mt-1">+${BATHROOM_PRICE} per bathroom</p>
-                    )}
-                  </div>
+                  {isCustomQuote ? (
+                    <div className="sm:col-span-2">
+                      <label className={labelCls}>Details *</label>
+                      <textarea
+                        required
+                        rows={4}
+                        placeholder="Please describe the space, size, and any specific requirements..."
+                        value={form.details}
+                        onChange={(e) => set('details', e.target.value)}
+                        className={`${inputCls} resize-none`}
+                      />
+                    </div>
+                  ) : (
+                    <>
+                      <div>
+                        <label className={labelCls}>Number of Rooms</label>
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          placeholder="0"
+                          value={form.rooms === 0 ? '' : form.rooms}
+                          onChange={(e) => {
+                            const val = e.target.value.replace(/\D/g, '')
+                            set('rooms', Math.min(10, parseInt(val) || 0))
+                          }}
+                          className={inputCls}
+                        />
+                        <p className="text-xs text-teal-600 mt-1">+${ROOM_PRICE} per room</p>
+                      </div>
+                      <div>
+                        <label className={labelCls}>Number of Bathrooms</label>
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          placeholder="0"
+                          value={form.bathrooms === 0 ? '' : form.bathrooms}
+                          onChange={(e) => {
+                            const val = e.target.value.replace(/\D/g, '')
+                            set('bathrooms', Math.min(10, parseInt(val) || 0))
+                          }}
+                          className={inputCls}
+                        />
+                        <p className="text-xs text-teal-600 mt-1">+${BATHROOM_PRICE} per bathroom</p>
+                      </div>
+                    </>
+                  )}
 
                   <div>
                     <label className={labelCls}>
