@@ -222,13 +222,14 @@ export default function BookAppointment() {
                   <div>
                     <label className={labelCls}>Number of Rooms</label>
                     <input
-                      type="number"
-                      min="0"
-                      max="10"
-                      value={form.rooms}
-                      onChange={(e) =>
-                        set('rooms', Math.min(10, Math.max(0, parseInt(e.target.value) || 0)))
-                      }
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="0"
+                      value={form.rooms === 0 ? '' : form.rooms}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, '')
+                        set('rooms', Math.min(10, parseInt(val) || 0))
+                      }}
                       className={inputCls}
                     />
                     {selectedType?.price != null && (
@@ -239,13 +240,14 @@ export default function BookAppointment() {
                   <div>
                     <label className={labelCls}>Number of Bathrooms</label>
                     <input
-                      type="number"
-                      min="0"
-                      max="10"
-                      value={form.bathrooms}
-                      onChange={(e) =>
-                        set('bathrooms', Math.min(10, Math.max(0, parseInt(e.target.value) || 0)))
-                      }
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="0"
+                      value={form.bathrooms === 0 ? '' : form.bathrooms}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, '')
+                        set('bathrooms', Math.min(10, parseInt(val) || 0))
+                      }}
                       className={inputCls}
                     />
                     {selectedType?.price != null && (
@@ -380,8 +382,11 @@ export default function BookAppointment() {
                       type="text"
                       required
                       placeholder="B3J 2N2"
+                      maxLength={7}
                       value={form.postalCode}
                       onChange={(e) => set('postalCode', e.target.value.toUpperCase())}
+                      pattern="[A-Za-z]\d[A-Za-z][ ]?\d[A-Za-z]\d"
+                      title="Enter a valid Canadian postal code (e.g. B3J 2N2)"
                       className={inputCls}
                     />
                   </div>
@@ -431,9 +436,16 @@ export default function BookAppointment() {
                     <input
                       type="tel"
                       required
-                      placeholder="902-555-1234"
+                      inputMode="numeric"
+                      placeholder="9025551234"
+                      maxLength={10}
                       value={form.phone}
-                      onChange={(e) => set('phone', e.target.value)}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, '').slice(0, 10)
+                        set('phone', val)
+                      }}
+                      pattern="\d{10}"
+                      title="Enter a 10-digit phone number"
                       className={inputCls}
                     />
                   </div>
