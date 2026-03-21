@@ -269,7 +269,7 @@ export default function BookAppointment() {
                     </>
                   )}
 
-                  <div className="min-w-0">
+                  <div className="min-w-0 overflow-hidden">
                     <label className={labelCls}>
                       <span className="flex items-center gap-1.5">
                         <Calendar size={13} /> Appointment Date *
@@ -280,8 +280,11 @@ export default function BookAppointment() {
                       required
                       min={today}
                       value={form.date}
-                      onChange={(e) => set('date', e.target.value)}
-                      className={`${inputCls} w-full`}
+                      onChange={(e) => {
+                        if (e.target.value < today) return
+                        set('date', e.target.value)
+                      }}
+                      className={`${inputCls} w-full max-w-full appearance-none`}
                     />
                   </div>
 
