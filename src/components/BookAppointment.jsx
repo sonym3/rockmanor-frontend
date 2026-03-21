@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { Calendar, Clock, MapPin, User, FileText, Phone } from 'lucide-react'
 
 const CLEANING_TYPES = [
@@ -61,6 +61,7 @@ export default function BookAppointment() {
 
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const dateRef = useRef(null)
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -123,12 +124,12 @@ export default function BookAppointment() {
   }, [form.cleaningType, form.rooms, form.bathrooms, selectedType])
 
   const set = (key, val) => setForm((f) => ({ ...f, [key]: val }))
-  const today = new Date().toISOString().split('T')[0]
+  const today = new Date().toLocaleDateString('en-CA')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (form.date < today) {
-      setError('Please select a valid future date.')
+      dateRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
       return
     }
     setLoading(true)
@@ -273,20 +274,22 @@ export default function BookAppointment() {
                     </>
                   )}
 
-                  <div className="min-w-0 overflow-hidden">
+                  <div ref={dateRef} className="min-w-0 w-full overflow-hidden">
                     <label className={labelCls}>
                       <span className="flex items-center gap-1.5">
                         <Calendar size={13} /> Appointment Date *
                       </span>
                     </label>
-                    <input
-                      type="date"
-                      required
-                      min={today}
-                      value={form.date}
-                      onChange={(e) => set('date', e.target.value)}
-                      className={`${inputCls} w-full max-w-full`}
-                    />
+                    <div className="overflow-hidden w-full">
+                      <input
+                        type="date"
+                        required
+                        min={today}
+                        value={form.date}
+                        onChange={(e) => set('date', e.target.value)}
+                        className={`${inputCls} block w-full max-w-full`}
+                      />
+                    </div>
                     {form.date && form.date < today && (
                       <p className="text-xs text-red-500 mt-1">Please select a future date.</p>
                     )}
