@@ -127,6 +127,10 @@ export default function BookAppointment() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (form.date < today) {
+      setError('Please select a valid future date.')
+      return
+    }
     setLoading(true)
     setError('')
     try {
@@ -280,12 +284,12 @@ export default function BookAppointment() {
                       required
                       min={today}
                       value={form.date}
-                      onChange={(e) => {
-                        if (e.target.value < today) return
-                        set('date', e.target.value)
-                      }}
-                      className={`${inputCls} w-full max-w-full appearance-none`}
+                      onChange={(e) => set('date', e.target.value)}
+                      className={`${inputCls} w-full max-w-full`}
                     />
+                    {form.date && form.date < today && (
+                      <p className="text-xs text-red-500 mt-1">Please select a future date.</p>
+                    )}
                   </div>
 
                   <div>
