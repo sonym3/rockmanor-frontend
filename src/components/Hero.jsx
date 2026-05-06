@@ -40,11 +40,11 @@ export default function Hero() {
             Book Your Next Appointment
           </a>
           <a
-            href="tel:9021111111"
+            href="tel:9027896801"
             className="w-full sm:w-auto flex items-center justify-center gap-2 border-2 border-white/40 hover:border-white/80 text-white font-semibold py-4 px-10 rounded-full text-lg transition-all duration-200 hover:bg-white/10"
           >
             <Phone size={20} />
-            Call 902-111-1111
+            Call 902-789-6801
           </a>
         </div>
 

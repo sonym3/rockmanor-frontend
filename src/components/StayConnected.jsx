@@ -79,11 +79,11 @@ export default function StayConnected() {
             <ul className="space-y-4">
               <li>
                 <a
-                  href="tel:9021111111"
+                  href="tel:9027896801"
                   className="flex items-start gap-3 text-blue-300 hover:text-white transition-colors group"
                 >
                   <Phone size={15} className="text-teal-400 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">902-111-1111</span>
+                  <span className="text-sm">902-789-6801</span>
                 </a>
               </li>
               <li>

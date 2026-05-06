@@ -113,7 +113,7 @@ export default function BookAppointment() {
         setError('Something went wrong. Please try again or call us directly.')
       }
     } catch {
-      setError('Unable to connect. Please call 902-111-1111 to book your appointment.')
+      setError('Unable to connect. Please call 902-789-6801 to book your appointment.')
     } finally {
       setLoading(false)
     }
@@ -137,8 +137,8 @@ export default function BookAppointment() {
             </p>
             <p className="text-slate-400 text-sm mb-6">
               Need immediate assistance? Call us at{' '}
-              <a href="tel:9021111111" className="text-teal-600 font-semibold">
-                902-111-1111
+              <a href="tel:9027896801" className="text-teal-600 font-semibold">
+                902-789-6801
               </a>
             </p>
             <button
@@ -485,8 +485,8 @@ export default function BookAppointment() {
                     <Phone size={13} />
                     <span>
                       Or call{' '}
-                      <a href="tel:9021111111" className="text-teal-600 font-semibold">
-                        902-111-1111
+                      <a href="tel:9027896801" className="text-teal-600 font-semibold">
+                        902-789-6801
                       </a>
                     </span>
                   </div>

@@ -51,11 +51,11 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="tel:9021111111"
+              href="tel:9027896801"
               className="flex items-center gap-1.5 bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200"
             >
               <Phone size={13} />
-              902-111-1111
+              902-789-6801
             </a>
           </div>
 
@@ -87,11 +87,11 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="tel:9021111111"
+              href="tel:9027896801"
               className="flex items-center gap-2 bg-teal-500 text-white px-4 py-3 rounded-xl font-semibold mt-3"
             >
               <Phone size={16} />
-              Call 902-111-1111
+              Call 902-789-6801
             </a>
           </div>
         </div>

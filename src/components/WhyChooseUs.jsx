@@ -107,11 +107,11 @@ export default function WhyChooseUs() {
                   Book Your Next Appointment
                 </a>
                 <a
-                  href="tel:9021111111"
+                  href="tel:9027896801"
                   className="flex items-center justify-center gap-2 border-2 border-white/40 hover:border-white text-white font-semibold py-3 px-7 rounded-full transition-all duration-200 text-sm whitespace-nowrap"
                 >
                   <Phone size={15} />
-                  902-111-1111
+                  902-789-6801
                 </a>
               </div>
             </div>
