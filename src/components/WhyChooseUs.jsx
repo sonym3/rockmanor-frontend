@@ -1,41 +1,35 @@
-import { Shield, Clock, Star, Leaf, ThumbsUp, Users, Phone } from 'lucide-react'
+import { Search, ThumbsUp, Clock, Shield, Leaf, Phone } from 'lucide-react'
 
 const features = [
   {
-    icon: Shield,
-    title: 'Fully Insured & Bonded',
+    icon: Search,
+    title: 'Attention to Detail',
     description:
-      'Every cleaner is background-checked, insured, and bonded — giving you complete peace of mind every visit.',
-  },
-  {
-    icon: Clock,
-    title: 'Flexible Scheduling',
-    description:
-      'Book mornings, evenings, or weekends. We work around your schedule, not the other way around.',
-  },
-  {
-    icon: Star,
-    title: 'Five-Star Quality',
-    description:
-      'Our meticulous attention to detail ensures every corner sparkles. We don\'t leave until you\'re fully satisfied.',
-  },
-  {
-    icon: Leaf,
-    title: 'Eco-Friendly Products',
-    description:
-      'We use environmentally safe, non-toxic solutions — completely safe for children, pets, and the planet.',
+      'Our commitment to excellence is reflected in our diligent attention to detail. We leave no corner unturned, ensuring that every nook and cranny of your space is thoroughly cleaned and refreshed.',
   },
   {
     icon: ThumbsUp,
     title: 'Satisfaction Guaranteed',
     description:
-      'Not happy? We\'ll come back and re-clean at no extra charge. Your satisfaction is always our top priority.',
+      'Your satisfaction is our top priority. We go above and beyond to ensure that you are delighted with our services. If there are any concerns or areas that require further attention, we will gladly address them promptly.',
   },
   {
-    icon: Users,
-    title: 'Trained Professionals',
+    icon: Clock,
+    title: 'Reliable',
     description:
-      'All team members undergo rigorous training to deliver consistently exceptional, thorough results every time.',
+      'Count on our team for dependable and consistent cleaning services. We understand the importance of punctuality and will always arrive at your scheduled appointments promptly.',
+  },
+  {
+    icon: Shield,
+    title: 'Insured',
+    description:
+      'Rest easy knowing that we are fully insured. Our comprehensive coverage provides you with peace of mind, ensuring that any unforeseen incidents or damages are properly handled.',
+  },
+  {
+    icon: Leaf,
+    title: 'Eco-Friendly Products',
+    description:
+      'Eco-friendly products are available at your request, keeping your space clean while being kind to the environment.',
   },
 ]
 
@@ -43,16 +37,28 @@ export default function WhyChooseUs() {
   return (
     <section id="why-us" className="py-20 md:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+        {/* About */}
         <div className="text-center mb-16">
+          <span className="text-teal-500 font-semibold text-sm uppercase tracking-widest">About Us</span>
+          <h2 className="text-3xl md:text-5xl font-bold text-blue-900 mt-2 mb-6">
+            Who We Are
+          </h2>
+          <p className="text-slate-600 max-w-3xl mx-auto text-lg leading-relaxed">
+            3-Steps Cleaning Services is a registered and insured locally-owned cleaning company, committed
+            to serving the Halifax Regional Municipality and its surroundings. We offer a range of services
+            tailored to meet your needs — including deep cleaning, end of tenancy cleaning, move-in/out
+            cleaning, and post-construction cleaning. We also provide services for commercial spaces,
+            including offices and apartment buildings. We take pride in our work and prioritize customer
+            satisfaction, offering excellent quality at a reasonable price.
+          </p>
+        </div>
+
+        {/* Header */}
+        <div className="text-center mb-12">
           <span className="text-teal-500 font-semibold text-sm uppercase tracking-widest">Why 3 Steps</span>
           <h2 className="text-3xl md:text-5xl font-bold text-blue-900 mt-2 mb-4">
             The Clean Difference
           </h2>
-          <p className="text-slate-500 max-w-2xl mx-auto text-lg">
-            We're not just another cleaning company — we're your trusted partner in maintaining a spotless,
-            healthy environment, every time.
-          </p>
         </div>
 
         {/* Feature Grid */}
@@ -91,7 +97,7 @@ export default function WhyChooseUs() {
                 Ready for a cleaner space?
               </h3>
               <p className="text-blue-300 mb-6 text-sm md:text-base">
-                Join hundreds of satisfied customers who trust 3 Steps with their home and business.
+                Join satisfied customers who trust 3 Steps with their home and business.
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
                 <a

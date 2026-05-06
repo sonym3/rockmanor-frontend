@@ -1,16 +1,8 @@
 import { useState } from 'react'
-import { Instagram, Facebook, Mail, Phone, MapPin, Send } from 'lucide-react'
-
-const TikTokIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
-    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.93a8.18 8.18 0 004.79 1.52V7.01a4.85 4.85 0 01-1.03-.32z" />
-  </svg>
-)
+import { Instagram, Mail, Phone, MapPin, Send } from 'lucide-react'
 
 const socials = [
   { icon: Instagram, label: 'Instagram', href: '#' },
-  { icon: Facebook, label: 'Facebook', href: '#' },
-  { icon: TikTokIcon, label: 'TikTok', href: '#' },
 ]
 
 const navLinks = [
@@ -18,8 +10,6 @@ const navLinks = [
   ['#why-us', 'Why Choose Us'],
   ['#services', 'Our Services'],
   ['#book', 'Book Appointment'],
-  ['#reviews', 'Reviews'],
-  ['#professional', 'Commercial Services'],
 ]
 
 export default function StayConnected() {
@@ -110,12 +100,6 @@ export default function StayConnected() {
                 <span className="text-blue-300 text-sm">Halifax, Nova Scotia, Canada</span>
               </li>
             </ul>
-            <div className="mt-5 bg-white/5 rounded-xl p-4">
-              <p className="text-xs font-semibold text-white mb-1.5">Service Hours</p>
-              <p className="text-blue-300 text-xs">Mon – Fri: 7:00 AM – 9:00 PM</p>
-              <p className="text-blue-300 text-xs">Saturday: 8:00 AM – 6:00 PM</p>
-              <p className="text-blue-300 text-xs">Sunday: 9:00 AM – 5:00 PM</p>
-            </div>
           </div>
 
           {/* Newsletter */}

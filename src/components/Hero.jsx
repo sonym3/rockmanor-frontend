@@ -29,7 +29,7 @@ export default function Hero() {
           Residential &amp; Commercial Cleaning
         </p>
         <p className="text-blue-300 text-base md:text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-          We bring the sparkle back to your home or office — professional, reliable, and thorough every single time.
+          Elevating your home and work place with high quality cleaning delivered with professionalism.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

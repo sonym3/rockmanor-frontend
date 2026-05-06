@@ -1,13 +1,13 @@
-import { useState, useMemo, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { Calendar, Clock, MapPin, User, FileText, Phone } from 'lucide-react'
 
 const CLEANING_TYPES = [
-  { value: 'simple', label: 'Simple Cleaning', price: 175 },
-  { value: 'standard', label: 'Standard Cleaning', price: 239 },
-  { value: 'deep', label: 'Deep Cleaning', price: 350 },
-  { value: 'office', label: 'Office Cleaning', price: null },
-  { value: 'moving_airbnb', label: 'Moving or Airbnb Cleaning', price: null },
-  { value: 'event', label: 'Event Cleaning', price: null },
+  { value: 'deep', label: 'Deep Cleaning' },
+  { value: 'move_in', label: 'Move-In Cleaning' },
+  { value: 'move_out', label: 'End of Tenancy / Move-Out Cleaning' },
+  { value: 'post_construction', label: 'Post Construction / Renovation Cleaning' },
+  { value: 'office', label: 'Office Cleaning' },
+  { value: 'event', label: 'Venues & Events Cleaning' },
 ]
 
 const TIME_SLOTS = Array.from({ length: 15 }, (_, i) => {
@@ -19,9 +19,6 @@ const TIME_SLOTS = Array.from({ length: 15 }, (_, i) => {
     label: `${displayHour}:00 ${period}`,
   }
 })
-
-const ROOM_PRICE = 40
-const BATHROOM_PRICE = 30
 
 const inputCls =
   'w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-100 outline-none transition-all text-slate-800 bg-white text-sm'
@@ -40,9 +37,9 @@ function SectionHeader({ icon: Icon, title }) {
 
 export default function BookAppointment() {
   const [form, setForm] = useState({
-    cleaningType: 'simple',
-    rooms: 0,
-    bathrooms: 0,
+    cleaningType: 'deep',
+    rooms: '',
+    bathrooms: '',
     date: '',
     time: '09:00',
     recurring: 'no',
@@ -64,20 +61,11 @@ export default function BookAppointment() {
   const dateRef = useRef(null)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    if (!submitted) return
-    const handler = (e) => {
-      if (e.target.closest('a[href="#book"]')) resetForm()
-    }
-    document.addEventListener('click', handler)
-    return () => document.removeEventListener('click', handler)
-  }, [submitted])
-
   const resetForm = () => {
     setForm({
-      cleaningType: 'simple',
-      rooms: 0,
-      bathrooms: 0,
+      cleaningType: 'deep',
+      rooms: '',
+      bathrooms: '',
       date: '',
       time: '09:00',
       recurring: 'no',
@@ -98,31 +86,6 @@ export default function BookAppointment() {
   }
 
   const selectedType = CLEANING_TYPES.find((t) => t.value === form.cleaningType)
-  const isCustomQuote = selectedType?.price === null
-
-  const orderSummary = useMemo(() => {
-    const base = selectedType?.price
-    if (base === null) return { total: null, lines: [] }
-    const roomCost = form.rooms * ROOM_PRICE
-    const bathroomCost = form.bathrooms * BATHROOM_PRICE
-    const total = base + roomCost + bathroomCost
-    const lines = [
-      { label: selectedType.label, amount: base },
-      ...(form.rooms > 0
-        ? [{ label: `${form.rooms} Room${form.rooms !== 1 ? 's' : ''} × $${ROOM_PRICE}`, amount: roomCost }]
-        : []),
-      ...(form.bathrooms > 0
-        ? [
-            {
-              label: `${form.bathrooms} Bathroom${form.bathrooms !== 1 ? 's' : ''} × $${BATHROOM_PRICE}`,
-              amount: bathroomCost,
-            },
-          ]
-        : []),
-    ]
-    return { total, lines }
-  }, [form.cleaningType, form.rooms, form.bathrooms, selectedType])
-
   const set = (key, val) => setForm((f) => ({ ...f, [key]: val }))
   const today = new Date().toLocaleDateString('en-CA')
 
@@ -138,7 +101,7 @@ export default function BookAppointment() {
       const res = await fetch('/api/booking', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, estimatedTotal: orderSummary.total }),
+        body: JSON.stringify(form),
       })
       if (res.ok) {
         setSubmitted(true)
@@ -203,7 +166,7 @@ export default function BookAppointment() {
 
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* ── Left: Form Panels ── */}
+            {/* Left: Form Panels */}
             <div className="lg:col-span-2 space-y-6">
               {/* Service Details */}
               <div className="bg-white rounded-3xl p-6 md:p-8 overflow-hidden">
@@ -221,58 +184,39 @@ export default function BookAppointment() {
                       {CLEANING_TYPES.map((t) => (
                         <option key={t.value} value={t.value}>
                           {t.label}
-                          {t.price ? ` — Starting at $${t.price}` : ' — Free Quote'}
                         </option>
                       ))}
                     </select>
                   </div>
 
-                  {isCustomQuote ? (
-                    <div className="sm:col-span-2">
-                      <label className={labelCls}>Details *</label>
-                      <textarea
-                        required
-                        rows={4}
-                        placeholder="Please describe the space, size, and any specific requirements..."
-                        value={form.details}
-                        onChange={(e) => set('details', e.target.value)}
-                        className={`${inputCls} resize-none`}
-                      />
-                    </div>
-                  ) : (
-                    <>
-                      <div>
-                        <label className={labelCls}>Number of Rooms</label>
-                        <input
-                          type="text"
-                          inputMode="numeric"
-                          placeholder="0"
-                          value={form.rooms === 0 ? '' : form.rooms}
-                          onChange={(e) => {
-                            const val = e.target.value.replace(/\D/g, '')
-                            set('rooms', Math.min(10, parseInt(val) || 0))
-                          }}
-                          className={inputCls}
-                        />
-                        <p className="text-xs text-teal-600 mt-1">+${ROOM_PRICE} per room</p>
-                      </div>
-                      <div>
-                        <label className={labelCls}>Number of Bathrooms</label>
-                        <input
-                          type="text"
-                          inputMode="numeric"
-                          placeholder="0"
-                          value={form.bathrooms === 0 ? '' : form.bathrooms}
-                          onChange={(e) => {
-                            const val = e.target.value.replace(/\D/g, '')
-                            set('bathrooms', Math.min(10, parseInt(val) || 0))
-                          }}
-                          className={inputCls}
-                        />
-                        <p className="text-xs text-teal-600 mt-1">+${BATHROOM_PRICE} per bathroom</p>
-                      </div>
-                    </>
-                  )}
+                  <div>
+                    <label className={labelCls}>Number of Rooms</label>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="e.g. 3"
+                      value={form.rooms}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, '')
+                        set('rooms', val)
+                      }}
+                      className={inputCls}
+                    />
+                  </div>
+                  <div>
+                    <label className={labelCls}>Number of Bathrooms</label>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="e.g. 2"
+                      value={form.bathrooms}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, '')
+                        set('bathrooms', val)
+                      }}
+                      className={inputCls}
+                    />
+                  </div>
 
                   <div ref={dateRef} className="min-w-0 w-full overflow-hidden">
                     <label className={labelCls}>
@@ -337,17 +281,17 @@ export default function BookAppointment() {
                   </div>
 
                   <div className="sm:col-span-2">
-                    <label className={labelCls}>Special Requests or Considerations</label>
+                    <label className={labelCls}>Details / Special Requests</label>
                     <textarea
                       rows={4}
-                      maxLength={400}
+                      maxLength={500}
                       value={form.specialRequests}
                       onChange={(e) => set('specialRequests', e.target.value)}
-                      placeholder="Any special instructions, areas of concern, or specific needs..."
+                      placeholder="Please describe the space, size, and any specific requirements or areas of concern..."
                       className={`${inputCls} resize-none`}
                     />
                     <p className="text-xs text-slate-400 mt-1 text-right">
-                      {form.specialRequests.length}/400
+                      {form.specialRequests.length}/500
                     </p>
                   </div>
                 </div>
@@ -477,43 +421,20 @@ export default function BookAppointment() {
               </div>
             </div>
 
-            {/* ── Right: Order Summary ── */}
+            {/* Right: Booking Summary */}
             <div className="lg:col-span-1">
               <div className="sticky top-24">
                 <div className="bg-white rounded-3xl p-6 md:p-8 shadow-2xl">
-                  <h3 className="text-xl font-bold text-blue-900 mb-6">Order Summary</h3>
+                  <h3 className="text-xl font-bold text-blue-900 mb-6">Booking Summary</h3>
 
-                  {orderSummary.total !== null ? (
-                    <>
-                      <div className="space-y-3 mb-5">
-                        {orderSummary.lines.map((line, i) => (
-                          <div key={i} className="flex justify-between items-center text-sm">
-                            <span className="text-slate-600">{line.label}</span>
-                            <span className="font-semibold text-slate-800">${line.amount}</span>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="border-t border-slate-100 pt-4">
-                        <div className="flex justify-between items-center">
-                          <span className="font-bold text-blue-900">Estimated Total</span>
-                          <span className="text-2xl font-bold text-teal-600">${orderSummary.total}</span>
-                        </div>
-                        <p className="text-xs text-slate-400 mt-2 leading-relaxed">
-                          * Final price confirmed before your appointment.
-                        </p>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="bg-teal-50 rounded-2xl p-5 text-center mb-5">
-                      <div className="text-3xl mb-2">📋</div>
-                      <p className="text-sm font-bold text-teal-700">Custom Quote</p>
-                      <p className="text-xs text-teal-600 mt-1 leading-relaxed">
-                        We'll contact you with a personalized quote based on your specific needs.
-                      </p>
-                    </div>
-                  )}
+                  <div className="bg-teal-50 rounded-2xl p-5 text-center mb-5">
+                    <div className="text-3xl mb-2">📋</div>
+                    <p className="text-sm font-bold text-teal-700">Custom Quote</p>
+                    <p className="text-xs text-teal-600 mt-1 leading-relaxed">
+                      We'll contact you with a personalized quote based on your specific needs.
+                    </p>
+                  </div>
 
-                  {/* Quick Preview */}
                   <div className="bg-slate-50 rounded-2xl p-4 space-y-2 mt-5">
                     <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
                       Selected

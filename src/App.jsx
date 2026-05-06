@@ -3,8 +3,6 @@ import Hero from './components/Hero'
 import WhyChooseUs from './components/WhyChooseUs'
 import Services from './components/Services'
 import BookAppointment from './components/BookAppointment'
-import Reviews from './components/Reviews'
-import ProfessionalServices from './components/ProfessionalServices'
 import StayConnected from './components/StayConnected'
 
 function App() {
@@ -15,8 +13,6 @@ function App() {
       <WhyChooseUs />
       <Services />
       <BookAppointment />
-      <Reviews />
-      <ProfessionalServices />
       <StayConnected />
     </div>
   )

@@ -6,8 +6,6 @@ const links = [
   { href: '#why-us', label: 'Why Us' },
   { href: '#services', label: 'Services' },
   { href: '#book', label: 'Book Now' },
-  { href: '#reviews', label: 'Reviews' },
-  { href: '#professional', label: 'Commercial' },
   { href: '#connect', label: 'Contact' },
 ]
 
