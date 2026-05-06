@@ -91,7 +91,8 @@ export default function BookAppointment() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (form.date < today) {
+    if (!form.date || form.date < today) {
+      setError('Please select a valid future date for your appointment.')
       dateRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
       return
     }

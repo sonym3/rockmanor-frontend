@@ -5,6 +5,13 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    background-color: #1e3a8a; /* matches footer bg-blue-900 so no white gap when overscrolling */
+  }
+
+  body {
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 
   * {
