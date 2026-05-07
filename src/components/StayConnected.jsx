@@ -88,11 +88,11 @@ export default function StayConnected() {
               </li>
               <li>
                 <a
-                  href="mailto:hello@3stepscleaning.com"
+                  href="mailto:book3steps@gmail.com"
                   className="flex items-start gap-3 text-blue-300 hover:text-white transition-colors"
                 >
                   <Mail size={15} className="text-teal-400 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">hello@3stepscleaning.com</span>
+                  <span className="text-sm">book3steps@gmail.com</span>
                 </a>
               </li>
               <li className="flex items-start gap-3">
