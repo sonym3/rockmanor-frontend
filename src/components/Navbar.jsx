@@ -20,11 +20,7 @@ export default function Navbar() {
   }, [])
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white shadow-md' : 'bg-transparent'
-      }`}
-    >
+    <nav className={`fixed top-0 left-0 right-0 z-50 bg-white transition-shadow duration-300 ${scrolled ? 'shadow-md' : ''}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-24 md:h-32">
           {/* Logo */}
@@ -32,9 +28,7 @@ export default function Navbar() {
             <img
               src="/logo.png"
               alt="3 Steps Cleaning Services"
-              className={`h-24 md:h-32 w-auto transition-all duration-300 ${
-                scrolled ? '' : 'brightness-0 invert'
-              }`}
+              className="h-24 md:h-32 w-auto"
             />
           </a>
 
@@ -44,9 +38,7 @@ export default function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium transition-colors duration-200 hover:text-teal-500 ${
-                  scrolled ? 'text-slate-700' : 'text-white/90'
-                }`}
+                className="text-sm font-medium text-slate-700 hover:text-teal-500 transition-colors duration-200"
               >
                 {link.label}
               </a>
@@ -63,9 +55,7 @@ export default function Navbar() {
           {/* Mobile Toggle */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`md:hidden p-2 rounded-lg transition-colors ${
-              scrolled ? 'text-slate-700 hover:bg-slate-100' : 'text-white hover:bg-white/10'
-            }`}
+            className="md:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors"
             aria-label="Toggle menu"
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
