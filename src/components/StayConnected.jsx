@@ -31,7 +31,7 @@ export default function StayConnected() {
             <img
               src="/logo.png"
               alt="3 Steps Cleaning Services"
-              className="h-24 w-auto mb-4 brightness-0 invert"
+              className="h-36 w-auto mb-4 brightness-0 invert"
             />
             <p className="text-blue-300 text-sm leading-relaxed mb-6">
               Professional residential and commercial cleaning services. Making your space sparkle, one
