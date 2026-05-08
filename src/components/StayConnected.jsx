@@ -28,12 +28,11 @@ export default function StayConnected() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div>
-            <h2 className="text-2xl font-bold mb-1">
-              3 Steps<span className="text-teal-400">.</span>
-            </h2>
-            <p className="text-teal-400 text-xs font-medium mb-4 uppercase tracking-wider">
-              Cleaning Services
-            </p>
+            <img
+              src="/logo.png"
+              alt="3 Steps Cleaning Services"
+              className="h-14 w-auto mb-4 brightness-0 invert"
+            />
             <p className="text-blue-300 text-sm leading-relaxed mb-6">
               Professional residential and commercial cleaning services. Making your space sparkle, one
               clean at a time.
