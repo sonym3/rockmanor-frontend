@@ -32,7 +32,7 @@ export default function Navbar() {
             <img
               src="/logo.png"
               alt="3 Steps Cleaning Services"
-              className={`h-10 w-auto transition-all duration-300 ${
+              className={`h-16 md:h-20 w-auto transition-all duration-300 ${
                 scrolled ? '' : 'brightness-0 invert'
               }`}
             />
