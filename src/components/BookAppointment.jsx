@@ -1,5 +1,7 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Calendar, Clock, MapPin, User, FileText, Phone } from 'lucide-react'
+
+const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY
 
 const CLEANING_TYPES = [
   { value: 'deep', label: 'Deep Cleaning' },
@@ -60,6 +62,9 @@ export default function BookAppointment() {
   const [loading, setLoading] = useState(false)
   const dateRef = useRef(null)
   const [error, setError] = useState('')
+  const [turnstileToken, setTurnstileToken] = useState('')
+  const turnstileRef = useRef(null)
+  const widgetIdRef = useRef(null)
 
   const resetForm = () => {
     setForm({
@@ -83,11 +88,49 @@ export default function BookAppointment() {
     })
     setSubmitted(false)
     setError('')
+    setTurnstileToken('')
   }
 
   const selectedType = CLEANING_TYPES.find((t) => t.value === form.cleaningType)
   const set = (key, val) => setForm((f) => ({ ...f, [key]: val }))
   const today = new Date().toLocaleDateString('en-CA')
+
+  // Render the Cloudflare Turnstile widget once its script has loaded.
+  useEffect(() => {
+    if (!TURNSTILE_SITE_KEY || submitted) return
+    let cancelled = false
+    const render = () => {
+      if (cancelled || !window.turnstile || !turnstileRef.current || widgetIdRef.current !== null) return
+      widgetIdRef.current = window.turnstile.render(turnstileRef.current, {
+        sitekey: TURNSTILE_SITE_KEY,
+        callback: (token) => setTurnstileToken(token),
+        'expired-callback': () => setTurnstileToken(''),
+        'error-callback': () => setTurnstileToken(''),
+      })
+    }
+    render()
+    const interval = setInterval(() => {
+      if (window.turnstile) {
+        clearInterval(interval)
+        render()
+      }
+    }, 200)
+    return () => {
+      cancelled = true
+      clearInterval(interval)
+      if (widgetIdRef.current !== null && window.turnstile) {
+        window.turnstile.remove(widgetIdRef.current)
+        widgetIdRef.current = null
+      }
+    }
+  }, [submitted])
+
+  const resetTurnstile = () => {
+    setTurnstileToken('')
+    if (window.turnstile && widgetIdRef.current !== null) {
+      window.turnstile.reset(widgetIdRef.current)
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -96,13 +139,17 @@ export default function BookAppointment() {
       dateRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
       return
     }
+    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+      setError('Please complete the verification below before submitting.')
+      return
+    }
     setLoading(true)
     setError('')
     try {
       const res = await fetch('/api/booking', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, turnstileToken }),
       })
       if (res.ok) {
         setSubmitted(true)
@@ -111,9 +158,11 @@ export default function BookAppointment() {
         }, 50)
       } else {
         setError('Something went wrong. Please try again or call us directly.')
+        resetTurnstile()
       }
     } catch {
       setError('Unable to connect. Please call 902-789-6801 to book your appointment.')
+      resetTurnstile()
     } finally {
       setLoading(false)
     }
@@ -471,6 +520,10 @@ export default function BookAppointment() {
                     <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">
                       {error}
                     </div>
+                  )}
+
+                  {TURNSTILE_SITE_KEY && (
+                    <div ref={turnstileRef} className="mt-4 flex justify-center" />
                   )}
 
                   <button
